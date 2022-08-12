@@ -10,6 +10,11 @@ SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 # Init official repo
 # ---------------------------------------------------\
 
+# Install key
+apt update; apt -y install gnupg
+curl https://repo.powerdns.com/FD380FBB-pub.asc | sudo apt-key add -
+
+# Install repos
 cat > /etc/apt/sources.list.d/pdns.list <<_EOF_
 deb [arch=amd64] http://repo.powerdns.com/debian bullseye-dnsdist-17 main
 _EOF_
@@ -20,13 +25,10 @@ Pin: origin repo.powerdns.com
 Pin-Priority: 600
 _EOF_
 
-apt update; apt install gnupg
-curl https://repo.powerdns.com/FD380FBB-pub.asc | sudo apt-key add -
-
-# Install
+# General install
 apt update
 apt -y install dnsdist
 
+# Final
 echo -e "Done!"
 dnsdist --version
-
