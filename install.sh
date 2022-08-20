@@ -2,6 +2,8 @@
 # Author: Yevgeniy Goncharov aka xck, http://sys-adm.in
 # Dnsdist installer for Debian-based distros
 
+set -e
+
 # Envs
 # ---------------------------------------------------\
 PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
