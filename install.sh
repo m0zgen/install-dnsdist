@@ -34,3 +34,6 @@ apt -y install dnsdist
 # Final
 echo -e "Done!"
 dnsdist --version
+
+#
+exit 0
