@@ -12,6 +12,9 @@ SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 # Init official repo
 # ---------------------------------------------------\
 
+# keep your currently-installed version
+yes N | dpkg --configure -a
+
 # Install key
 apt update; apt -y install gnupg
 curl https://repo.powerdns.com/FD380FBB-pub.asc | sudo apt-key add -
