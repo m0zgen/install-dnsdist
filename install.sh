@@ -29,7 +29,7 @@ while [[ "$#" -gt 0 ]]; do
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
-done# Functions
+done
 
 # Init official repo
 # ---------------------------------------------------\
