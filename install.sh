@@ -56,11 +56,13 @@ _EOF_
 
 install_dnsdist() {
     # General install
+    install_repos
     apt update
     apt -y install dnsdist
 }
 
 install_dnsdist_quiet() {
+    install_repos
     export DEBIAN_FRONTEND=noninteractive
     apt-get -yq installdnsdist
 }
