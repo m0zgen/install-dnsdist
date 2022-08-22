@@ -37,12 +37,11 @@ done
 # keep your currently-installed version
 # yes N | dpkg --configure -a
 
-install_repos() {
-    # Install key
-    apt update; apt -y install gnupg
-    curl https://repo.powerdns.com/FD380FBB-pub.asc | sudo apt-key add -
+# Install key
+apt update; apt -y install gnupg
+curl https://repo.powerdns.com/FD380FBB-pub.asc | sudo apt-key add -
 
-    # Install repos
+# Install repos
 cat > /etc/apt/sources.list.d/pdns.list <<_EOF_
 deb [arch=amd64] http://repo.powerdns.com/debian bullseye-dnsdist-17 main
 _EOF_
@@ -52,30 +51,17 @@ Package: dnsdist*
 Pin: origin repo.powerdns.com
 Pin-Priority: 600
 _EOF_
-}
 
-install_dnsdist() {
-    # General install
-    install_repos
-    apt update
-    apt -y install dnsdist
-}
-
-install_dnsdist_quiet() {
-    install_repos
-    export DEBIAN_FRONTEND=noninteractive
-    apt-get -yq installdnsdist
-}
-
-
-final() {
-    # Final
-    echo -e "Done!"
-    dnsdist --version
-}
+# Update repos data
+apt update
 
 if [[ "$_Q" -eq "1" ]]; then
-    install_dnsdist_quiet
+    export DEBIAN_FRONTEND=noninteractive
+    apt -yq install dnsdist
 else
-    install_dnsdist
+    apt -y install dnsdist
 fi
+
+# Final
+echo -e "Done!"
+dnsdist --version
