@@ -31,22 +31,44 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
+# Checks supporting distros
+checkDistro() {
+    # Checking distro
+    if [ -e /etc/centos-release ]; then
+        DISTRO=`cat /etc/redhat-release | awk '{print $1,$4}'`
+        RPM=1
+    elif [ -e /etc/fedora-release ]; then
+        DISTRO=`cat /etc/fedora-release | awk '{print ($1,$3~/^[0-9]/?$3:$4)}'`
+        RPM=2
+    elif [ -e /etc/os-release ]; then
+        DISTRO=`lsb_release -d | awk -F"\t" '{print $2}'`
+        RPM=0
+        DEB=1
+    else
+        DISTRO="UNKNOWN"
+        RPM=0
+        DEB=0
+    fi
+}
+
 # Init official repo
 # ---------------------------------------------------\
 
-# keep your currently-installed version
-# yes N | dpkg --configure -a
+instalDebian() {
 
-# Install key
-apt update; apt -y install gnupg
-curl https://repo.powerdns.com/FD380FBB-pub.asc | sudo apt-key add -
+    # keep your currently-installed version
+    # yes N | dpkg --configure -a
+
+    # Install key
+    apt update; apt -y install gnupg
+    curl https://repo.powerdns.com/FD380FBB-pub.asc | sudo apt-key add -
 
 # Install repos
-cat > /etc/apt/sources.list.d/pdns.list <<_EOF_
+    cat > /etc/apt/sources.list.d/pdns.list <<_EOF_
 deb [arch=amd64] http://repo.powerdns.com/debian bullseye-dnsdist-17 main
 _EOF_
 
-cat > /etc/apt/preferences.d/dnsdist <<_EOF_
+    cat > /etc/apt/preferences.d/dnsdist <<_EOF_
 Package: dnsdist*
 Pin: origin repo.powerdns.com
 Pin-Priority: 600
@@ -65,3 +87,14 @@ fi
 # Final
 echo -e "Done!"
 dnsdist --version
+
+}
+
+checkDistro
+
+if [[ "${DEB}" -eq "1" ]]; then
+    instalDebian
+else
+    echo -e "Not supported distro. Exit..."
+    exit 1
+fi
