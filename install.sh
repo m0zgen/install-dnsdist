@@ -65,7 +65,7 @@ instalDebian() {
 
 # Install repos
     cat > /etc/apt/sources.list.d/pdns.list <<_EOF_
-deb [arch=amd64] http://repo.powerdns.com/debian bullseye-dnsdist-17 main
+deb [arch=amd64] http://repo.powerdns.com/debian bullseye-dnsdist-18 main
 _EOF_
 
     cat > /etc/apt/preferences.d/dnsdist <<_EOF_
